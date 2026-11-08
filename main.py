@@ -1,17 +1,21 @@
 
 from database import get_connection
-from student import update_student_age, delete_student
+from student import update_student_age, delete_student, search_student
 
+import inspect
 
+print("FILE:", inspect.getfile(search_student))
+print("SIGNATURE:", inspect.signature(search_student))
+print("ARGUMENT COUNT:", search_student.__code__.co_argcount)
 def add_student():
     conn = get_connection()
     cur = conn.cursor()
 
     name = input("Enter Student Name: ")
     email = input("Enter Student Email: ")
-    age = int(input("Enter Student Age: "))
+    age = get_valid_age()
     city = input("Enter Student City: ")
-
+    
     cur.execute("""
         INSERT INTO students(name, email, age, city)
         VALUES (%s, %s, %s, %s)
@@ -26,6 +30,20 @@ def add_student():
 
     cur.close()
     conn.close()
+def get_valid_age():
+
+    while True:
+        try:
+            age = int(input("Enter Student Age: "))
+
+            if age > 0:
+                return age
+
+            else:
+                print("Age must be greater than zero!")
+
+        except ValueError:
+            print("Please enter a valid number!")    
 
 
 def display_students():
@@ -53,7 +71,8 @@ def main():
         print("2. Display Students")
         print("3. Update Student Age")
         print("4. Delete Student")
-        print("5. Exit")
+        print("5. Search Student")
+        print("6. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -73,11 +92,10 @@ def main():
             delete_student(student_id)
 
         elif choice == "5":
-            print("Thank you for using Student Management System!")
-            break
+            search_student()
 
-        else:
-            print("Invalid choice! Please try again.")
+        elif choice == "6":
+            break
 
 
 if __name__ == "__main__":
