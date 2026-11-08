@@ -46,8 +46,8 @@ def delete_student(student_id):
 
 
 # Testing DELETE
-student_id = int(input("Enter Student ID:"))
-delete_student(student_id)
+#student_id = int(input("Enter Student ID:"))
+#delete_student(student_id)
 
 # Testing UPDATE (uncomment when needed)
 # student_id = int(input("Enter Student ID:"))
